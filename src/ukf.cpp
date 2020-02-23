@@ -11,10 +11,10 @@ using Eigen::VectorXd;
 UKF::UKF()
 {
   // if this is false, laser measurements will be ignored (except during init)
-  use_laser_ = true;
+  use_laser_ = false;
 
   // if this is false, radar measurements will be ignored (except during init)
-  use_radar_ = false;
+  use_radar_ = true;
 
   // initial state vector
   x_ = VectorXd(5);
@@ -56,6 +56,11 @@ UKF::UKF()
    * TODO: Complete the initialization. See ukf.h for other member properties.
    * Hint: one or more values initialized above might be wildly off...
    */
+  n_aug_= 7;
+  n_x_= 5;
+  lambda_= 3.;
+  Xsig_pred_= MatrixXd(n_x_, 2 * n_aug_ + 1);
+
 }
 
 UKF::~UKF() {}
@@ -68,13 +73,13 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
    */
    double dt= meas_package.timestamp_ -time_us_;
    Prediction(dt);
-   if(meas_package.sensor_type_ == meas_package.RADAR){
+   UpdateRadar(meas_package);
+/*   if(meas_package.sensor_type_ == meas_package.RADAR){
       UpdateRadar(meas_package);
    }
    else{
       UpdateLidar(meas_package);
-   }
-  
+   }*/
 
 }
 void UKF::SigmaPoints(double delta_t)
@@ -82,7 +87,7 @@ void UKF::SigmaPoints(double delta_t)
   //Create augmented state vector
   MatrixXd Xsig_aug = MatrixXd(n_aug_, 2 * n_aug_ + 1);
   VectorXd x_aug(n_aug_);
-  x_aug.head(n_x_) = x_;
+  x_aug.head(5) = x_;
   x_aug(5) = 0;
   x_aug(6) = 0;
 
@@ -162,6 +167,7 @@ void UKF::Prediction(double delta_t)
 
   // set weights
   double weight_0 = lambda_ / (lambda_ + n_aug_);
+  weights_ = VectorXd(2*n_aug_+1); 
   weights_(0) = weight_0;
   for (int i = 1; i < 2 * n_aug_ + 1; ++i)
   { // 2n+1 weights
@@ -324,7 +330,8 @@ void UKF::UpdateRadar(MeasurementPackage meas_package)
   int n_z = 3;
   PredictRadarMeasurements(&z, &S);
   //UKF radar update
-  Eigen::MatrixXd T(2*n_aug_ + 1,n_z);
+
+  Eigen::MatrixXd T(n_x_, n_z);
   T.fill(0.0);
   for (int i = 0; i < 2* n_aug_ + 1; ++i) {
     VectorXd x_diff= Xsig_pred_.col(i) -x_; 
@@ -333,10 +340,10 @@ void UKF::UpdateRadar(MeasurementPackage meas_package)
     while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
     
     VectorXd z_diff = Zsig_.col(i)-  z;
+    
     // angle normalization
     while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
     while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
-
     T = T+ weights_(i) * x_diff*z_diff.transpose();
   }
   MatrixXd K= T*S.inverse();
