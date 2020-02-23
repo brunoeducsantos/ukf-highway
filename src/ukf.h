@@ -50,9 +50,11 @@ class UKF {
 
    /**
    * Predict Radar Measruments using sigma points  
+   * @param z_out measurement mean prediction
+   * @param S_out measurement covariance prediction 
    */
 
-  void PredictRadarMeasurements(VectorXd* z_out, MatrixXd* S_out);
+  void PredictRadarMeasurements(Eigen::VectorXd* z_out, Eigen::MatrixXd* S_out);
 
   // initially set to false, set to true in first call of ProcessMeasurement
   bool is_initialized_;
@@ -107,6 +109,10 @@ class UKF {
 
   // Sigma point spreading parameter
   double lambda_;
+
+  // Predict measurements matrix
+  Eigen::MatrixXd Zsig_;
+
 };
 
 #endif  // UKF_H
