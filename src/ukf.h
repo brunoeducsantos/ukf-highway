@@ -44,9 +44,15 @@ class UKF {
 
  /**
    * Generate sigma points 
+   * @param delta_t time stamp delta
    */
   void SigmaPoints(double delta_t);
 
+   /**
+   * Predict Radar Measruments using sigma points  
+   */
+
+  void PredictRadarMeasurements(VectorXd* z_out, MatrixXd* S_out);
 
   // initially set to false, set to true in first call of ProcessMeasurement
   bool is_initialized_;

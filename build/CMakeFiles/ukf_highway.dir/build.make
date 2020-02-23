@@ -60,15 +60,15 @@ include CMakeFiles/ukf_highway.dir/flags.make
 CMakeFiles/ukf_highway.dir/src/main.cpp.o: CMakeFiles/ukf_highway.dir/flags.make
 CMakeFiles/ukf_highway.dir/src/main.cpp.o: ../src/main.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ukf_highway.dir/src/main.cpp.o"
-	/usr/bin/g++-5   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ukf_highway.dir/src/main.cpp.o -c /root/projects/SFND_Unscented_Kalman_Filter/src/main.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ukf_highway.dir/src/main.cpp.o -c /root/projects/SFND_Unscented_Kalman_Filter/src/main.cpp
 
 CMakeFiles/ukf_highway.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ukf_highway.dir/src/main.cpp.i"
-	/usr/bin/g++-5  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/projects/SFND_Unscented_Kalman_Filter/src/main.cpp > CMakeFiles/ukf_highway.dir/src/main.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/projects/SFND_Unscented_Kalman_Filter/src/main.cpp > CMakeFiles/ukf_highway.dir/src/main.cpp.i
 
 CMakeFiles/ukf_highway.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ukf_highway.dir/src/main.cpp.s"
-	/usr/bin/g++-5  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/projects/SFND_Unscented_Kalman_Filter/src/main.cpp -o CMakeFiles/ukf_highway.dir/src/main.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/projects/SFND_Unscented_Kalman_Filter/src/main.cpp -o CMakeFiles/ukf_highway.dir/src/main.cpp.s
 
 CMakeFiles/ukf_highway.dir/src/main.cpp.o.requires:
 
@@ -84,15 +84,15 @@ CMakeFiles/ukf_highway.dir/src/main.cpp.o.provides.build: CMakeFiles/ukf_highway
 CMakeFiles/ukf_highway.dir/src/ukf.cpp.o: CMakeFiles/ukf_highway.dir/flags.make
 CMakeFiles/ukf_highway.dir/src/ukf.cpp.o: ../src/ukf.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ukf_highway.dir/src/ukf.cpp.o"
-	/usr/bin/g++-5   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ukf_highway.dir/src/ukf.cpp.o -c /root/projects/SFND_Unscented_Kalman_Filter/src/ukf.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ukf_highway.dir/src/ukf.cpp.o -c /root/projects/SFND_Unscented_Kalman_Filter/src/ukf.cpp
 
 CMakeFiles/ukf_highway.dir/src/ukf.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ukf_highway.dir/src/ukf.cpp.i"
-	/usr/bin/g++-5  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/projects/SFND_Unscented_Kalman_Filter/src/ukf.cpp > CMakeFiles/ukf_highway.dir/src/ukf.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/projects/SFND_Unscented_Kalman_Filter/src/ukf.cpp > CMakeFiles/ukf_highway.dir/src/ukf.cpp.i
 
 CMakeFiles/ukf_highway.dir/src/ukf.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ukf_highway.dir/src/ukf.cpp.s"
-	/usr/bin/g++-5  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/projects/SFND_Unscented_Kalman_Filter/src/ukf.cpp -o CMakeFiles/ukf_highway.dir/src/ukf.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/projects/SFND_Unscented_Kalman_Filter/src/ukf.cpp -o CMakeFiles/ukf_highway.dir/src/ukf.cpp.s
 
 CMakeFiles/ukf_highway.dir/src/ukf.cpp.o.requires:
 
@@ -108,15 +108,15 @@ CMakeFiles/ukf_highway.dir/src/ukf.cpp.o.provides.build: CMakeFiles/ukf_highway.
 CMakeFiles/ukf_highway.dir/src/tools.cpp.o: CMakeFiles/ukf_highway.dir/flags.make
 CMakeFiles/ukf_highway.dir/src/tools.cpp.o: ../src/tools.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ukf_highway.dir/src/tools.cpp.o"
-	/usr/bin/g++-5   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ukf_highway.dir/src/tools.cpp.o -c /root/projects/SFND_Unscented_Kalman_Filter/src/tools.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ukf_highway.dir/src/tools.cpp.o -c /root/projects/SFND_Unscented_Kalman_Filter/src/tools.cpp
 
 CMakeFiles/ukf_highway.dir/src/tools.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ukf_highway.dir/src/tools.cpp.i"
-	/usr/bin/g++-5  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/projects/SFND_Unscented_Kalman_Filter/src/tools.cpp > CMakeFiles/ukf_highway.dir/src/tools.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/projects/SFND_Unscented_Kalman_Filter/src/tools.cpp > CMakeFiles/ukf_highway.dir/src/tools.cpp.i
 
 CMakeFiles/ukf_highway.dir/src/tools.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ukf_highway.dir/src/tools.cpp.s"
-	/usr/bin/g++-5  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/projects/SFND_Unscented_Kalman_Filter/src/tools.cpp -o CMakeFiles/ukf_highway.dir/src/tools.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/projects/SFND_Unscented_Kalman_Filter/src/tools.cpp -o CMakeFiles/ukf_highway.dir/src/tools.cpp.s
 
 CMakeFiles/ukf_highway.dir/src/tools.cpp.o.requires:
 
@@ -132,15 +132,15 @@ CMakeFiles/ukf_highway.dir/src/tools.cpp.o.provides.build: CMakeFiles/ukf_highwa
 CMakeFiles/ukf_highway.dir/src/render/render.cpp.o: CMakeFiles/ukf_highway.dir/flags.make
 CMakeFiles/ukf_highway.dir/src/render/render.cpp.o: ../src/render/render.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ukf_highway.dir/src/render/render.cpp.o"
-	/usr/bin/g++-5   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ukf_highway.dir/src/render/render.cpp.o -c /root/projects/SFND_Unscented_Kalman_Filter/src/render/render.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ukf_highway.dir/src/render/render.cpp.o -c /root/projects/SFND_Unscented_Kalman_Filter/src/render/render.cpp
 
 CMakeFiles/ukf_highway.dir/src/render/render.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ukf_highway.dir/src/render/render.cpp.i"
-	/usr/bin/g++-5  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/projects/SFND_Unscented_Kalman_Filter/src/render/render.cpp > CMakeFiles/ukf_highway.dir/src/render/render.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/projects/SFND_Unscented_Kalman_Filter/src/render/render.cpp > CMakeFiles/ukf_highway.dir/src/render/render.cpp.i
 
 CMakeFiles/ukf_highway.dir/src/render/render.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ukf_highway.dir/src/render/render.cpp.s"
-	/usr/bin/g++-5  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/projects/SFND_Unscented_Kalman_Filter/src/render/render.cpp -o CMakeFiles/ukf_highway.dir/src/render/render.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/projects/SFND_Unscented_Kalman_Filter/src/render/render.cpp -o CMakeFiles/ukf_highway.dir/src/render/render.cpp.s
 
 CMakeFiles/ukf_highway.dir/src/render/render.cpp.o.requires:
 
