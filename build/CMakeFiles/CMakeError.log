@@ -1,0 +1,55 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7cb82/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7cb82.dir/build.make CMakeFiles/cmTC_7cb82.dir/build
+make[1]: Entering directory '/root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7cb82.dir/CheckSymbolExists.c.o
+/usr/bin/gcc-5     -o CMakeFiles/cmTC_7cb82.dir/CheckSymbolExists.c.o   -c /root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_7cb82
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7cb82.dir/link.txt --verbose=1
+/usr/bin/gcc-5       CMakeFiles/cmTC_7cb82.dir/CheckSymbolExists.c.o  -o cmTC_7cb82 -rdynamic 
+CMakeFiles/cmTC_7cb82.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x16): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_7cb82.dir/build.make:97: recipe for target 'cmTC_7cb82' failed
+make[1]: *** [cmTC_7cb82] Error 1
+make[1]: Leaving directory '/root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_7cb82/fast' failed
+make: *** [cmTC_7cb82/fast] Error 2
+
+File /root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_28d2d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_28d2d.dir/build.make CMakeFiles/cmTC_28d2d.dir/build
+make[1]: Entering directory '/root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_28d2d.dir/CheckFunctionExists.c.o
+/usr/bin/gcc-5    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_28d2d.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_28d2d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_28d2d.dir/link.txt --verbose=1
+/usr/bin/gcc-5   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_28d2d.dir/CheckFunctionExists.c.o  -o cmTC_28d2d -rdynamic -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_28d2d.dir/build.make:97: recipe for target 'cmTC_28d2d' failed
+make[1]: *** [cmTC_28d2d] Error 1
+make[1]: Leaving directory '/root/projects/SFND_Unscented_Kalman_Filter/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_28d2d/fast' failed
+make: *** [cmTC_28d2d/fast] Error 2
+
+
