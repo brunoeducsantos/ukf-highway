@@ -11,7 +11,7 @@ using Eigen::VectorXd;
 UKF::UKF()
 {
   // if this is false, laser measurements will be ignored (except during init)
-  use_laser_ = false;
+  use_laser_ = true;
 
   // if this is false, radar measurements will be ignored (except during init)
   use_radar_ = true;
@@ -23,10 +23,10 @@ UKF::UKF()
   P_ = MatrixXd(5, 5);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 30;
+  std_a_ = 2;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 30;
+  std_yawdd_ = 2;
 
   /**
    * DO NOT MODIFY measurement noise values below.
@@ -67,19 +67,12 @@ UKF::~UKF() {}
 
 void UKF::ProcessMeasurement(MeasurementPackage meas_package)
 {
-  /**
-   * TODO: Complete this function! Make sure you switch between lidar and radar
-   * measurements.
-   */
-   double dt= meas_package.timestamp_ -time_us_;
-   Prediction(dt);
-   UpdateRadar(meas_package);
-/*   if(meas_package.sensor_type_ == meas_package.RADAR){
-      UpdateRadar(meas_package);
-   }
-   else{
-      UpdateLidar(meas_package);
-   }*/
+  if(meas_package.sensor_type_ == MeasurementPackage::RADAR){
+    UpdateRadar(meas_package);
+  }
+  else{
+    UpdateLidar(meas_package);
+  }
 
 }
 void UKF::SigmaPoints(double delta_t)
@@ -154,6 +147,7 @@ void UKF::SigmaPoints(double delta_t)
     Xsig_pred_(3, i) = yaw_p;
     Xsig_pred_(4, i) = yawd_p;
   }
+
 }
 
 void UKF::Prediction(double delta_t)
@@ -294,8 +288,8 @@ void UKF::PredictRadarMeasurements(VectorXd* z_out, MatrixXd* S_out){
   for (int i=0; i < 2*n_aug_ + 1; ++i) {
     z_pred = z_pred + weights_(i) * Zsig_.col(i);
   }
-  *z_out= z_pred;
 
+  *z_out= z_pred;
   // innovation covariance matrix S
   S.fill(0.0);
   for (int i = 0; i < 2 * n_aug_ + 1; ++i) {  // 2n+1 simga points
@@ -307,7 +301,6 @@ void UKF::PredictRadarMeasurements(VectorXd* z_out, MatrixXd* S_out){
     while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
     S = S + weights_(i) * z_diff * z_diff.transpose();
   }
-
   // add measurement noise covariance matrix
   MatrixXd R = MatrixXd(n_z,n_z);
   R <<  std_radr_*std_radr_, 0, 0,
@@ -325,12 +318,14 @@ void UKF::UpdateRadar(MeasurementPackage meas_package)
    * covariance, P_.
    * You can also calculate the radar NIS, if desired.
    */
-  VectorXd z;
-  MatrixXd S;
+  VectorXd *z_out;
+  MatrixXd *S_out;
   int n_z = 3;
-  PredictRadarMeasurements(&z, &S);
+  PredictRadarMeasurements(z_out, S_out);
   //UKF radar update
-
+  VectorXd z= *z_out;
+  MatrixXd S= *S_out;
+  
   Eigen::MatrixXd T(n_x_, n_z);
   T.fill(0.0);
   for (int i = 0; i < 2* n_aug_ + 1; ++i) {
