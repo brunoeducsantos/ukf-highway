@@ -16,10 +16,11 @@ UKF::UKF()
   // if this is false, radar measurements will be ignored (except during init)
   use_radar_ = true;
 
+  is_initialized_=false;
+
   // initial state vector
   x_ = VectorXd(5);
-  x_.fill(0.0);
-
+  x_.setZero();
   // initial covariance matrix
   P_ = MatrixXd(5, 5);
   P_.setZero();
@@ -60,7 +61,7 @@ UKF::UKF()
    */
   n_aug_= 7;
   n_x_= 5;
-  lambda_= 3.;
+  lambda_= 0.3;
   Xsig_pred_= MatrixXd(n_x_, 2 * n_aug_ + 1);
   Xsig_pred_.fill(0.0);
   weights_ = VectorXd(2*n_aug_+1); 
@@ -72,12 +73,34 @@ UKF::~UKF() {}
 
 void UKF::ProcessMeasurement(MeasurementPackage meas_package)
 { 
-  double dt= meas_package.timestamp_ -  time_us_;
-  if(meas_package.sensor_type_ == MeasurementPackage::RADAR){
+  
+  if(!is_initialized_){
+    //TODO Fix state initialization
+    if(meas_package.sensor_type_ == MeasurementPackage::RADAR){
+      x_.tail(3)= meas_package.raw_measurements_;
+      }
+    else{
+      x_.head(2)= meas_package.raw_measurements_;
+    }
+    //covariance initialization
+    P_.fill(0.0);
+    P_(0,0)= std_laspx_* std_laspx_;
+    P_(1,1)= std_laspy_*std_laspy_;
+    P_(2,2)= std_radr_* std_radr_;
+    P_(3,3)= std_radphi_*std_radphi_;
+    P_(4,4)= std_radrd_ *std_radrd_ ;
+    is_initialized_=true;
+  }
+
+  else{
+  double dt= (meas_package.timestamp_ -  time_us_)/100000.;
+  Prediction(dt);
+  if(meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_){
     UpdateRadar(meas_package);
   }
-  else{
+  else if(use_laser_){
     UpdateLidar(meas_package);
+  }
   }
 
 }
@@ -85,6 +108,7 @@ void UKF::SigmaPoints(double delta_t)
 {
   //Create augmented state vector
   MatrixXd Xsig_aug = MatrixXd(n_aug_, 2 * n_aug_ + 1);
+  Xsig_aug.fill(0.0);
   VectorXd x_aug(n_aug_);
   x_aug.head(5) = x_;
   x_aug(5) = 0;
