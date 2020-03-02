@@ -23,10 +23,9 @@ UKF::UKF()
   x_.setZero();
   // initial covariance matrix
   P_ = MatrixXd(5, 5);
-  P_.setZero();
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 2;
+  std_a_ = 1.5;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
   std_yawdd_ = 2;
@@ -61,7 +60,7 @@ UKF::UKF()
    */
   n_aug_= 7;
   n_x_= 5;
-  lambda_= 0.3;
+  lambda_= 5;
   Xsig_pred_= MatrixXd(n_x_, 2 * n_aug_ + 1);
   Xsig_pred_.fill(0.0);
   weights_ = VectorXd(2*n_aug_+1); 
@@ -97,10 +96,12 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
   Prediction(dt);
   if(meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_){
     UpdateRadar(meas_package);
+
   }
-  else if(use_laser_){
+  else if(use_laser_ && (meas_package.sensor_type_ == MeasurementPackage::LASER)){
     UpdateLidar(meas_package);
-  }
+
+ }
   }
 
 }
@@ -252,8 +253,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package)
     VectorXd z_diff = Zsig_.col(i) - z;
 
     // angle normalization
-    while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
-    while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
+ 
     S = S + weights_(i) * z_diff * z_diff.transpose();
   }
 

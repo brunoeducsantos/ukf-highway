@@ -18,8 +18,6 @@ int main(int argc, char** argv)
 
 	Highway highway(viewer);
 
-	//initHighway(viewer);
-
 	int frame_per_sec = 30;
 	int sec_interval = 10;
 	int frame_count = 0;
