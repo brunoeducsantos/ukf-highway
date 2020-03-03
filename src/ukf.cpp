@@ -91,13 +91,14 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
     P_(3, 3) = std_radphi_ * std_radphi_;
     P_(4, 4) = std_radrd_ * std_radrd_;
     is_initialized_ = true;
-    time_us_= meas_package.timestamp_;
   }
 
   else
   {
     
     double dt = (meas_package.timestamp_ - time_us_) / 100000.;
+    time_us_= meas_package.timestamp_;
+
     Prediction(dt);
     if (meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_)
     {
