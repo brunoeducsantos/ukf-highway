@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ukf_highway.dir/src/main.cpp.o"
-  "CMakeFiles/ukf_highway.dir/src/ukf.cpp.o"
-  "CMakeFiles/ukf_highway.dir/src/tools.cpp.o"
   "CMakeFiles/ukf_highway.dir/src/render/render.cpp.o"
-  "ukf_highway.pdb"
+  "CMakeFiles/ukf_highway.dir/src/tools.cpp.o"
+  "CMakeFiles/ukf_highway.dir/src/ukf.cpp.o"
   "ukf_highway"
+  "ukf_highway.pdb"
 )
 
 # Per-language clean rules from dependency scanning.
