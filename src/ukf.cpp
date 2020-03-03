@@ -117,10 +117,12 @@ void UKF::SigmaPoints(double delta_t)
 
   //Augmented covariance matrix
   MatrixXd P_aug = MatrixXd(7, 7);
-  P_aug.fill(0.0);
-  P_aug.topLeftCorner(5, 5) = P_;
-  P_aug(5, 5) = std_a_ * std_a_;
-  P_aug(6, 6) = std_yawdd_ * std_yawdd_;
+  P_aug.topLeftCorner(5,5) = P_;
+  MatrixXd Q(2,2);
+  Q= MatrixXd::Zero(2,2);
+  Q(1,1)=std_yawdd_*std_yawdd_;
+  Q(0,0)= std_a_*std_a_;
+  P_aug.bottomRightCorner(2,2)=Q;
 
   // create square root matrix
   MatrixXd L = P_aug.llt().matrixL();
