@@ -25,7 +25,7 @@ UKF::UKF()
   P_ = MatrixXd(5, 5);
   P_.setZero();
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 4.5;
+  std_a_ = 3;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
   std_yawdd_ = 3;
@@ -60,7 +60,7 @@ UKF::UKF()
    */
   n_aug_ = 7;
   n_x_ = 5;
-  lambda_ = 3.5;
+  lambda_ = 0.076;
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
   Xsig_pred_.fill(0.0);
   weights_ = VectorXd(2 * n_aug_ + 1);
