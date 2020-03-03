@@ -48,14 +48,6 @@ class UKF {
    */
   void SigmaPoints(double delta_t);
 
-   /**
-   * Predict Radar Measruments using sigma points  
-   * @param z_out measurement mean prediction
-   * @param S_out measurement covariance prediction 
-   */
-
-  void PredictRadarMeasurements(Eigen::VectorXd &z_out, Eigen::MatrixXd &S_out);
-
   // initially set to false, set to true in first call of ProcessMeasurement
   bool is_initialized_;
 

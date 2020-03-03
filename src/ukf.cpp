@@ -25,10 +25,10 @@ UKF::UKF()
   P_ = MatrixXd(5, 5);
   P_.setZero();
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 2.;
+  std_a_ = 0.8;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 2;
+  std_yawdd_ = 0.8;
 
   /**
    * DO NOT MODIFY measurement noise values below.
@@ -288,9 +288,15 @@ void UKF::UpdateLidar(MeasurementPackage meas_package)
   P_= P_ - (K*S*K.transpose());
 }
 
-
-void UKF::PredictRadarMeasurements(VectorXd &z_out, MatrixXd &S_out){
- int n_z=3;
+void UKF::UpdateRadar(MeasurementPackage meas_package)
+{
+  /**
+   * Update the belief 
+   * about the object's position. Modify the state vector, x_, and 
+   * covariance, P_.
+   * You can also calculate the radar NIS, if desired.
+   */
+  int n_z=3;
  Zsig_ = MatrixXd(n_z, 2 * n_aug_ + 1);
  Zsig_.fill(0.0);
  MatrixXd S = MatrixXd(n_z,n_z);
@@ -320,7 +326,6 @@ void UKF::PredictRadarMeasurements(VectorXd &z_out, MatrixXd &S_out){
     z_pred = z_pred + weights_(i) * Zsig_.col(i);
   }
 
-  z_out= z_pred;
   // innovation covariance matrix S
   for (int i = 0; i < 2 * n_aug_ + 1; ++i) {  // 2n+1 simga points
     // residual
@@ -337,21 +342,8 @@ void UKF::PredictRadarMeasurements(VectorXd &z_out, MatrixXd &S_out){
         0, std_radphi_*std_radphi_, 0,
         0, 0,std_radrd_*std_radrd_;
   S = S + R;
-  S_out= S;
-}
 
-void UKF::UpdateRadar(MeasurementPackage meas_package)
-{
-  /**
-   * Update the belief 
-   * about the object's position. Modify the state vector, x_, and 
-   * covariance, P_.
-   * You can also calculate the radar NIS, if desired.
-   */
-  VectorXd z;
-  MatrixXd S;
-  int n_z = 3;
-  PredictRadarMeasurements(z, S);
+
   //UKF radar update
   
   Eigen::MatrixXd T(n_x_, n_z);
@@ -362,7 +354,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package)
     while (x_diff(3)> M_PI) x_diff(3)-=2.*M_PI;
     while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
     
-    VectorXd z_diff = Zsig_.col(i)-  z;
+    VectorXd z_diff = Zsig_.col(i)-  z_pred;
     
     // angle normalization
     while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
@@ -372,7 +364,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package)
   MatrixXd K= T*S.inverse();
 
   // angle normalization
-  VectorXd z_diff= meas_package.raw_measurements_-z;
+  VectorXd z_diff= meas_package.raw_measurements_-z_pred;
   while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
   while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
   //Mean update
