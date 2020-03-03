@@ -28,7 +28,7 @@ UKF::UKF()
   std_a_ = 3;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 3;
+  std_yawdd_ = 1;
 
   /**
    * DO NOT MODIFY measurement noise values below.
@@ -60,7 +60,7 @@ UKF::UKF()
    */
   n_aug_ = 7;
   n_x_ = 5;
-  lambda_ = 0.076;
+  lambda_ = 0.5;
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
   Xsig_pred_.fill(0.0);
   weights_ = VectorXd(2 * n_aug_ + 1);
@@ -72,15 +72,22 @@ UKF::~UKF() {}
 void UKF::ProcessMeasurement(MeasurementPackage meas_package)
 {
 
+
   if (!is_initialized_)
   {
     //TODO Fix state initialization
     if (meas_package.sensor_type_ == MeasurementPackage::RADAR)
-    {
+    { 
+      double rho=  meas_package.raw_measurements_(0);
+      double phi=  meas_package.raw_measurements_(1);
+      x_(0)= rho*cos(phi);
+      x_(1)= rho*sin(phi);
+      std::cout<<"AAAAAA";
       x_.tail(3) = meas_package.raw_measurements_;
     }
     else
     {
+      std::cout<<"BBBBBBB";
       x_.head(2) = meas_package.raw_measurements_;
     }
     //covariance initialization
@@ -91,6 +98,8 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
     P_(3, 3) = std_radphi_ * std_radphi_;
     P_(4, 4) = std_radrd_ * std_radrd_;
     is_initialized_ = true;
+    time_us_= meas_package.timestamp_;
+    return;
   }
 
   else
