@@ -1,7 +1,6 @@
 #include "ukf.h"
 #include "Eigen/Dense"
 #include <iostream>
-#include <math.h>
 using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -63,7 +62,7 @@ UKF::UKF()
    */
   n_aug_ = 7;
   n_x_ = 5;
-  lambda_ = (n_x_-n_aug_);
+  lambda_ = (2-n_aug_)+ 0.3;
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
   Xsig_pred_.fill(0.0);
   weights_ = VectorXd(2 * n_aug_ + 1);
@@ -86,11 +85,10 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
       x_(0)= rho*cos(phi);
       x_(1)= rho*sin(phi);
       x_.tail(3) = meas_package.raw_measurements_;
-      P_(0, 0) = std_radr_ *  std_radphi_;
-      P_(1, 1) = std_radr_ *  std_radphi_;
       P_(2, 2) = std_radr_ * std_radr_;
       P_(3, 3) = std_radphi_ * std_radphi_;
       P_(4, 4) = std_radrd_ * std_radrd_;
+      
     }
     else
     {
@@ -102,6 +100,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
 
     is_initialized_ = true;
     time_us_= meas_package.timestamp_;
+    return ;
   }
 
   else
@@ -146,9 +145,9 @@ void UKF::SigmaPoints(double delta_t)
   Xsig_aug.col(0) = x_aug;
 
   for (int i = 0; i < n_aug_; ++i)
-  {
-    Xsig_aug.col(i + 1) = x_aug + sqrt(lambda_ + n_aug_) * L.col(i);
-    Xsig_aug.col(i + 1 + n_aug_) = x_aug - sqrt(lambda_ + n_aug_) * L.col(i);
+  { 
+    Xsig_aug.col(i + 1) = x_aug + sqrt((lambda_ + n_aug_)*1.) * L.col(i);
+    Xsig_aug.col(i + 1 + n_aug_) = x_aug - sqrt((lambda_ + n_aug_)*1.) * L.col(i);
   }
 
   // predict sigma points
@@ -200,7 +199,8 @@ void UKF::SigmaPoints(double delta_t)
 
 void UKF::Prediction(double delta_t)
 {
-  /**
+  /**   
+
    *  Predict sigma points, the state, 
    * and the state covariance matrix.
    */
@@ -208,11 +208,11 @@ void UKF::Prediction(double delta_t)
   SigmaPoints(delta_t);
 
   // set weights
-  double weight_0 = lambda_ / (lambda_ + n_aug_);
+  double weight_0 = 1.* lambda_ / 1.*(lambda_ + n_aug_);
   weights_(0) = weight_0;
   for (int i = 1; i < 2 * n_aug_ + 1; ++i)
   { // 2n+1 weights
-    double weight = 0.5 / (n_aug_ + lambda_);
+    double weight = 0.5 / 1.*(n_aug_ + lambda_);
     weights_(i) = weight;
   }
 
@@ -230,7 +230,6 @@ void UKF::Prediction(double delta_t)
     // angle normalization
     while (x_diff(3) > M_PI) x_diff(3) -= 2. * M_PI;
     while (x_diff(3) < -M_PI) x_diff(3) += 2. * M_PI;
-
     P_ = P_ + weights_(i) * x_diff * x_diff.transpose();
   }
 }
