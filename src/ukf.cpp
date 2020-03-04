@@ -1,6 +1,7 @@
 #include "ukf.h"
 #include "Eigen/Dense"
 #include <iostream>
+#include <math.h>
 using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -24,11 +25,13 @@ UKF::UKF()
   // initial covariance matrix
   P_ = MatrixXd(5, 5);
   P_.setZero();
+  P_.fill(0.0);
+
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 3;
+  std_a_ = 2.5;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 1;
+  std_yawdd_ = 4.*M_PI/3.;
 
   /**
    * DO NOT MODIFY measurement noise values below.
@@ -60,7 +63,7 @@ UKF::UKF()
    */
   n_aug_ = 7;
   n_x_ = 5;
-  lambda_ = 0.5;
+  lambda_ = (n_x_-n_aug_);
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
   Xsig_pred_.fill(0.0);
   weights_ = VectorXd(2 * n_aug_ + 1);
@@ -82,24 +85,23 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
       double phi=  meas_package.raw_measurements_(1);
       x_(0)= rho*cos(phi);
       x_(1)= rho*sin(phi);
-      std::cout<<"AAAAAA";
       x_.tail(3) = meas_package.raw_measurements_;
+      P_(0, 0) = std_radr_ *  std_radphi_;
+      P_(1, 1) = std_radr_ *  std_radphi_;
+      P_(2, 2) = std_radr_ * std_radr_;
+      P_(3, 3) = std_radphi_ * std_radphi_;
+      P_(4, 4) = std_radrd_ * std_radrd_;
     }
     else
     {
-      std::cout<<"BBBBBBB";
       x_.head(2) = meas_package.raw_measurements_;
-    }
+      P_(0, 0) = std_laspx_ * std_laspx_;
+      P_(1, 1) = std_laspy_ * std_laspy_;
+      }
     //covariance initialization
-    P_.fill(0.0);
-    P_(0, 0) = std_laspx_ * std_laspx_;
-    P_(1, 1) = std_laspy_ * std_laspy_;
-    P_(2, 2) = std_radr_ * std_radr_;
-    P_(3, 3) = std_radphi_ * std_radphi_;
-    P_(4, 4) = std_radrd_ * std_radrd_;
+
     is_initialized_ = true;
     time_us_= meas_package.timestamp_;
-    return;
   }
 
   else
@@ -142,6 +144,7 @@ void UKF::SigmaPoints(double delta_t)
   MatrixXd L = P_aug.llt().matrixL();
   // create augmented sigma points
   Xsig_aug.col(0) = x_aug;
+
   for (int i = 0; i < n_aug_; ++i)
   {
     Xsig_aug.col(i + 1) = x_aug + sqrt(lambda_ + n_aug_) * L.col(i);
@@ -159,7 +162,6 @@ void UKF::SigmaPoints(double delta_t)
     double yawd = Xsig_aug(4, i);
     double nu_a = Xsig_aug(5, i);
     double nu_yawdd = Xsig_aug(6, i);
-
     // predicted state values
     double px_p, py_p;
 
@@ -207,7 +209,6 @@ void UKF::Prediction(double delta_t)
 
   // set weights
   double weight_0 = lambda_ / (lambda_ + n_aug_);
-
   weights_(0) = weight_0;
   for (int i = 1; i < 2 * n_aug_ + 1; ++i)
   { // 2n+1 weights
