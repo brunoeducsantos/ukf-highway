@@ -4,6 +4,7 @@
 using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
+#include <chrono>
 
 /**
  * Initializes Unscented Kalman filter
@@ -62,7 +63,7 @@ UKF::UKF()
    */
   n_aug_ = 7;
   n_x_ = 5;
-  lambda_ = (2-n_aug_)+ 0.3;
+  lambda_ = (2-n_aug_)+ 0.35;
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
   Xsig_pred_.fill(0.0);
   weights_ = VectorXd(2 * n_aug_ + 1);
@@ -106,8 +107,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
   else
   {
     
-    double dt = (meas_package.timestamp_ - time_us_) / 100000.;
-    time_us_= meas_package.timestamp_;
+    double dt = (meas_package.timestamp_ - time_us_) / pow(10,6);
 
     Prediction(dt);
     if (meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_)
@@ -140,6 +140,7 @@ void UKF::SigmaPoints(double delta_t)
   P_aug.bottomRightCorner(2, 2) = Q;
 
   // create square root matrix
+  // Record start time
   MatrixXd L = P_aug.llt().matrixL();
   // create augmented sigma points
   Xsig_aug.col(0) = x_aug;
