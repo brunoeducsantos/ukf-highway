@@ -1,10 +1,9 @@
 #include "ukf.h"
-#include "Eigen/Dense"
+#include <Eigen/Dense>
 #include <iostream>
 using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
-#include <chrono>
 
 /**
  * Initializes Unscented Kalman filter
@@ -23,15 +22,13 @@ UKF::UKF()
   x_ = VectorXd(5);
   x_.setZero();
   // initial covariance matrix
-  P_ = MatrixXd(5, 5);
-  P_.setZero();
-  P_.fill(0.0);
+  P_ = MatrixXd::Zero(5, 5);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 2.5;
+  std_a_ = 0.2;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 4.*M_PI/3.;
+  std_yawdd_ = 0.2;
 
   /**
    * DO NOT MODIFY measurement noise values below.
@@ -63,9 +60,8 @@ UKF::UKF()
    */
   n_aug_ = 7;
   n_x_ = 5;
-  lambda_ = (2-n_aug_)+ 0.35;
-  Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
-  Xsig_pred_.fill(0.0);
+  lambda_ = (3-n_aug_)*1. ;
+  Xsig_pred_ = MatrixXd::Zero(n_x_, 2 * n_aug_ + 1);
   weights_ = VectorXd(2 * n_aug_ + 1);
   weights_.setZero();
 }
@@ -131,7 +127,7 @@ void UKF::SigmaPoints(double delta_t)
   x_aug(6) = 0;
 
   //Augmented covariance matrix
-  MatrixXd P_aug = MatrixXd(7, 7);
+  MatrixXd P_aug = MatrixXd::Zero(7, 7);
   P_aug.topLeftCorner(5, 5) = P_;
   MatrixXd Q(2, 2);
   Q = MatrixXd::Zero(2, 2);
@@ -209,8 +205,9 @@ void UKF::Prediction(double delta_t)
   SigmaPoints(delta_t);
 
   // set weights
-  double weight_0 = 1.* lambda_ / 1.*(lambda_ + n_aug_);
+  double weight_0 = lambda_ / (lambda_ + n_aug_);
   weights_(0) = weight_0;
+  lambda_= 3-n_aug_;
   for (int i = 1; i < 2 * n_aug_ + 1; ++i)
   { // 2n+1 weights
     double weight = 0.5 / 1.*(n_aug_ + lambda_);
@@ -228,6 +225,7 @@ void UKF::Prediction(double delta_t)
   { // iterate over sigma points
     // state difference
     VectorXd x_diff = Xsig_pred_.col(i) - x_;
+    
     // angle normalization
     while (x_diff(3) > M_PI) x_diff(3) -= 2. * M_PI;
     while (x_diff(3) < -M_PI) x_diff(3) += 2. * M_PI;
@@ -332,9 +330,11 @@ void UKF::UpdateRadar(MeasurementPackage meas_package)
     double v = Xsig_pred_(2, i);
     double yaw = Xsig_pred_(3, i);
 
+    while (yaw > M_PI) yaw -= 2. * M_PI;
+    while (yaw< -M_PI) yaw += 2. * M_PI;
+
     double v1 = cos(yaw) * v;
     double v2 = sin(yaw) * v;
-
     // measurement model
     Zsig_(0, i) = sqrt(p_x * p_x + p_y * p_y);                         // r
     Zsig_(1, i) = atan2(p_y, p_x);                                     // phi
