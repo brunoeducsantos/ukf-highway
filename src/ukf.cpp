@@ -62,8 +62,15 @@ UKF::UKF()
   n_x_ = 5;
   lambda_ = (3-n_aug_)*1. ;
   Xsig_pred_ = MatrixXd::Zero(n_x_, 2 * n_aug_ + 1);
+  // set weights
   weights_ = VectorXd(2 * n_aug_ + 1);
-  weights_.setZero();
+  double weight_0 = lambda_ / (lambda_ + n_aug_);
+  weights_(0) = weight_0;
+  for (int i = 1; i < 2 * n_aug_ + 1; ++i)
+  { // 2n+1 weights
+    double weight = 0.5 /(n_aug_ + lambda_);
+    weights_(i) = weight;
+  }
 }
 
 UKF::~UKF() {}
@@ -114,6 +121,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package)
     {
       UpdateLidar(meas_package);
     }
+    time_us_= meas_package.timestamp_;
   }
 }
 void UKF::SigmaPoints(double delta_t)
@@ -164,8 +172,8 @@ void UKF::SigmaPoints(double delta_t)
     // avoid division by zero
     if (fabs(yawd) > 0.001)
     {
-      px_p = p_x + v / yawd * (sin(yaw + yawd * delta_t) - sin(yaw));
-      py_p = p_y + v / yawd * (cos(yaw) - cos(yaw + yawd * delta_t));
+      px_p = p_x + (v / yawd) * (sin(yaw + yawd * delta_t) - sin(yaw));
+      py_p = p_y + (v / yawd) * (cos(yaw) - cos(yaw + yawd * delta_t));
     }
     else
     {
@@ -204,23 +212,16 @@ void UKF::Prediction(double delta_t)
   //Predict sigma points
   SigmaPoints(delta_t);
 
-  // set weights
-  double weight_0 = lambda_ / (lambda_ + n_aug_);
-  weights_(0) = weight_0;
-  lambda_= 3-n_aug_;
-  for (int i = 1; i < 2 * n_aug_ + 1; ++i)
-  { // 2n+1 weights
-    double weight = 0.5 / 1.*(n_aug_ + lambda_);
-    weights_(i) = weight;
-  }
-
   // predicted state mean
+  VectorXd x_pred(n_x_);
+  x_pred.fill(0.);
   for (int i = 0; i < 2 * n_aug_ + 1; ++i)
   { // iterate over sigma points
-    x_ = x_ + weights_(i) * Xsig_pred_.col(i);
+    x_pred += weights_(i) * Xsig_pred_.col(i);
   }
 
   // predicted state covariance matrix
+  P_.fill(0.);
   for (int i = 0; i < 2 * n_aug_ + 1; ++i)
   { // iterate over sigma points
     // state difference
@@ -231,6 +232,9 @@ void UKF::Prediction(double delta_t)
     while (x_diff(3) < -M_PI) x_diff(3) += 2. * M_PI;
     P_ = P_ + weights_(i) * x_diff * x_diff.transpose();
   }
+  
+  x_=x_pred;
+
 }
 
 void UKF::UpdateLidar(MeasurementPackage meas_package)
