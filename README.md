@@ -1,5 +1,5 @@
-# SFND_Unscented_Kalman_Filter
-Sensor Fusion UKF Highway Project Starter Code
+# Unscented Kalman Filter in Highway simulation
+
 
 <img src="media/ukf_highway_tracked.gif" width="700" height="400" />
 
@@ -67,10 +67,9 @@ This is optional!
 
 If you'd like to generate your own radar and lidar modify the code in `highway.h` to alter the cars. Also check out `tools.cpp` to
 change how measurements are taken, for instance lidar markers could be the (x,y) center of bounding boxes by scanning the PCD environment
-and performing clustering. This is similar to what was done in Sensor Fusion Lidar Obstacle Detection.
+and performing clustering. 
 
-## Project Instructions and Rubric
 
-This information is only accessible by people who are already enrolled in Sensor Fusion. 
-If you are enrolled, see the project page in the classroom
-for instructions and the project rubric.
+## Disclamer
+This project was cloned from [Udacity UKF project](https://github.com/udacity/SFND_Unscented_Kalman_Filter) in the context of [Sensor Fusion Engineer nanodegree](https://www.udacity.com/course/sensor-fusion-engineer-nanodegree--nd313).
+
