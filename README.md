@@ -3,6 +3,7 @@
 
 <img src="media/ukf_highway_tracked.gif" width="700" height="400" />
 
+## Overview
 This project is an implementation of Unscented Kalman Filter to estimate the state of multiple cars on a highway using noisy lidar and radar measurements. 
 
 The viewer scene is centered around the ego car and the coordinate system is relative to the ego car as well. The ego car is green while the  other traffic cars are blue. The traffic cars will be accelerating and altering their steering to change lanes. Each of the traffic car's has it's own UKF object generated for it, and will update each indidual one during every time step. 
