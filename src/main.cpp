@@ -4,7 +4,7 @@
 
 //#include "render/render.h"
 #include "highway.h"
-
+#include "tools.h"
 int main(int argc, char** argv)
 {
 
@@ -39,5 +39,8 @@ int main(int argc, char** argv)
 		time_us = 1000000*frame_count/frame_per_sec;
 		
 	}
+	std::vector<Car> cars = highway.getTraffic();
+	Tools tools;
+	tools.plotNISMetric(cars);
 
 }

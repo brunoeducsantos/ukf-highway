@@ -105,6 +105,9 @@ class UKF {
   // Predict measurements matrix
   Eigen::MatrixXd Zsig_;
 
+  //NIS
+  double epsilon;
+
 };
 
 #endif  // UKF_H

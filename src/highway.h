@@ -133,6 +133,7 @@ public:
 				tools.lidarSense(traffic[i], viewer, timestamp, visualize_lidar);
 				tools.radarSense(traffic[i], egoCar, viewer, timestamp, visualize_radar);
 				tools.ukfResults(traffic[i],viewer, projectedTime, projectedSteps);
+				tools.plotNISMetric(traffic[i],projectedSteps,projectedTime);
 				VectorXd estimate(4);
 				double v  = traffic[i].ukf.x_(2);
     			double yaw = traffic[i].ukf.x_(3);
@@ -187,6 +188,10 @@ public:
 				viewer->addText("Vy: "+std::to_string(rmseFailLog[3]), 30, 50, 20, 1, 0, 0, "rmse_fail_vy");
 		}
 		
+	}
+
+	std::vector<Car> getTraffic(){
+		return traffic;
 	}
 	
 };

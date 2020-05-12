@@ -55,11 +55,12 @@ UKF::UKF()
    */
 
   /**
-   * TODO: Complete the initialization. See ukf.h for other member properties.
-   * Hint: one or more values initialized above might be wildly off...
+   *  Initialization. 
    */
   n_aug_ = 7;
   n_x_ = 5;
+  
+
   lambda_ = (3-n_aug_)*1. ;
   Xsig_pred_ = MatrixXd::Zero(n_x_, 2 * n_aug_ + 1);
   // set weights
@@ -71,6 +72,8 @@ UKF::UKF()
     double weight = 0.5 /(n_aug_ + lambda_);
     weights_(i) = weight;
   }
+  //NIS metric
+  epsilon=0.;
 }
 
 UKF::~UKF() {}
@@ -232,9 +235,8 @@ void UKF::Prediction(double delta_t)
     while (x_diff(3) < -M_PI) x_diff(3) += 2. * M_PI;
     P_ = P_ + weights_(i) * x_diff * x_diff.transpose();
   }
-  
+   
   x_=x_pred;
-
 }
 
 void UKF::UpdateLidar(MeasurementPackage meas_package)
@@ -306,6 +308,10 @@ void UKF::UpdateLidar(MeasurementPackage meas_package)
   x_ = x_ + K * z_diff;
   //Covariance update
   P_ = P_ - (K * S * K.transpose());
+
+  //NIS
+  epsilon=z_diff.transpose()*S.inverse()*z_diff;
+  //TODO accumulate into vector
 }
 
 void UKF::UpdateRadar(MeasurementPackage meas_package)
@@ -396,4 +402,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package)
   x_ = x_ + K * z_diff;
   //Covariance update
   P_ = P_ - (K * S * K.transpose());
+  //NIS
+  epsilon=z_diff.transpose()*S.inverse()*z_diff;
+  //TODO accumulate into vector
 }
