@@ -83,20 +83,6 @@ void Tools::ukfResults(Car car, pcl::visualization::PCLVisualizer::Ptr &viewer, 
 		}
 	}
 }
-void Tools::plotNISMetric(vector<Car> cars)
-{	
-	//TODO fix plotting using vector
-	// for (int i = 0; i < cars.size(); i++)
-	// {
-	// 	plt::plot(cars[i].ukf.epsilon);
-	// 	plt::plot(0.01, "r--");
-	// 	plt::xlabel("frames");
-	// 	plt::ylabel("NIS");
-	// 	plt::grid(1);
-	// }
-	// plt::show();
-}
-
 VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 							  const vector<VectorXd> &ground_truth)
 {

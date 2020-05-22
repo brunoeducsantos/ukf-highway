@@ -48,7 +48,6 @@ class Tools {
 	rmarker radarSense(Car& car, Car ego, pcl::visualization::PCLVisualizer::Ptr& viewer, long long timestamp, bool visualize);
 	void ukfResults(Car car, pcl::visualization::PCLVisualizer::Ptr& viewer, double time, int steps);
 	 
-	void plotNISMetric(vector<Car> cars);
 	/**
 	* A helper method to calculate RMSE.
 	*/
