@@ -30,7 +30,7 @@ public:
 	int projectedSteps = 0;
 	// --------------------------------
 
-	Highway(pcl::visualization::PCLVisualizer::Ptr& viewer)
+	Highway(pcl::visualization::PCLVisualizer::Ptr& viewer,std::string config_file)
 	{
 
 		tools = Tools();
@@ -52,7 +52,7 @@ public:
 		car1.setInstructions(car1_instructions);
 		if( trackCars[0] )
 		{
-			UKF ukf1;
+			UKF ukf1(config_file);
 			car1.setUKF(ukf1);
 		}
 		traffic.push_back(car1);
@@ -66,7 +66,7 @@ public:
 		car2.setInstructions(car2_instructions);
 		if( trackCars[1] )
 		{
-			UKF ukf2;
+			UKF ukf2(config_file);
 			car2.setUKF(ukf2);
 		}
 		traffic.push_back(car2);
@@ -90,7 +90,7 @@ public:
 		car3.setInstructions(car3_instructions);
 		if( trackCars[2] )
 		{
-			UKF ukf3;
+			UKF ukf3(config_file);
 			car3.setUKF(ukf3);
 		}
 		traffic.push_back(car3);

@@ -9,7 +9,7 @@ class UKF {
   /**
    * Constructor
    */
-  UKF();
+  UKF(std::string config_file="");
 
   /**
    * Destructor
@@ -48,6 +48,7 @@ class UKF {
    */
   void SigmaPoints(double delta_t);
 
+  //TODO: Convert to private members
   // initially set to false, set to true in first call of ProcessMeasurement
   bool is_initialized_;
 
@@ -107,6 +108,9 @@ class UKF {
 
   //NIS
   double epsilon;
+
+  //config file
+  std::string config_file;
 
 };
 

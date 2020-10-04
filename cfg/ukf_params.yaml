@@ -1,0 +1,5 @@
+use_laser: true
+use_radar: true
+is_initialized: true
+std_a: 3.5
+std_yawdd: 0.8

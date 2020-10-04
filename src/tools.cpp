@@ -1,10 +1,8 @@
 #include <iostream>
 #include <random>
 #include "tools.h"
-#include "matplotlib.h"
 using namespace std;
 using std::vector;
-namespace plt = matplotlibcpp;
 Tools::Tools() {}
 
 Tools::~Tools() {}

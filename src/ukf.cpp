@@ -1,6 +1,7 @@
 #include "ukf.h"
 #include <Eigen/Dense>
 #include <iostream>
+#include <yaml-cpp/yaml.h>
 using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -8,28 +9,31 @@ using Eigen::VectorXd;
 /**
  * Initializes Unscented Kalman filter
  */
-UKF::UKF()
+UKF::UKF(std::string filename)
 {
+  YAML::Node config = YAML::LoadFile(filename);
+  
   // if this is false, laser measurements will be ignored (except during init)
-  use_laser_ = true;
-
+  // use_laser_ = true;
+  use_laser_= config["use_laser"].as<bool>();
   // if this is false, radar measurements will be ignored (except during init)
-  use_radar_ = true;
-
-  is_initialized_ = false;
+  // use_radar_ = true;
+  use_radar_= config["use_radar"].as<bool>();
+  
+  // is_initialized_ = false;
+  is_initialized_= config["is_initialized"].as<bool>();
 
   // initial state vector
   x_ = VectorXd(5);
   x_.setZero();
   // initial covariance matrix
   P_ = MatrixXd::Zero(5, 5);
-
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 3.5;
-
+  // std_a_ = 3.5;
+  std_a_= config["std_a"].as<double>();
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 0.8;
-
+  // std_yawdd_ = 0.8;
+  std_yawdd_= config["std_yawdd"].as<double>();
   /**
    * DO NOT MODIFY measurement noise values below.
    * These are provided by the sensor manufacturer.
@@ -60,7 +64,6 @@ UKF::UKF()
   n_aug_ = 7;
   n_x_ = 5;
   
-
   lambda_ = (3-n_aug_)*1. ;
   Xsig_pred_ = MatrixXd::Zero(n_x_, 2 * n_aug_ + 1);
   // set weights
